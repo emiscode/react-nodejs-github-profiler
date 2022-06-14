@@ -1,17 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import {CACHE_MANAGER, Inject, Injectable} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class RepositoriesService {
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-  getAllRepositories(username: string): Observable<any[]> {
+  async getAllRepositories(username: string): Promise<Observable<any[]>> {
     const url = `https://api.github.com/users/${username}/repos`;
+    const dataFromCache: Observable<any[]> = await this.cacheManager.get(username);
 
-    return this.http.get(url).pipe(
-      map((response) => response.data),
+    if (dataFromCache) {
+      console.log('Data received from Cache');
+      return dataFromCache;
+    }
+
+    const dataFromGitHub = this.http.get(url).pipe(
+        map((response) => response.data),
     );
+
+    await this.cacheManager.set(username, dataFromGitHub, { ttl: 100 });
+
+    console.log('Data received from GitHub');
+
+    return dataFromGitHub;
   }
 }

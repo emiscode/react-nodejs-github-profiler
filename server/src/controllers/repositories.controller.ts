@@ -7,7 +7,7 @@ export class RepositoriesController {
   constructor(private readonly repositoryService: RepositoriesService) {}
 
   @Get(':username')
-  getAllRepositories(@Param() params): Observable<any[]> {
+  async getAllRepositories(@Param() params): Promise<Observable<any[]>> {
     return this.repositoryService.getAllRepositories(params.username);
   }
 }
