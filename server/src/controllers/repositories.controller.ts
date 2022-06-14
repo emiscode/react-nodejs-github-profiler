@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import {Controller, Get, Param} from '@nestjs/common';
 import { Observable } from 'rxjs/internal/Observable';
 import { RepositoriesService } from 'src/services/repositories.service';
 
@@ -6,8 +6,8 @@ import { RepositoriesService } from 'src/services/repositories.service';
 export class RepositoriesController {
   constructor(private readonly repositoryService: RepositoriesService) {}
 
-  @Get()
-  getAllRepositories(): Observable<any[]> {
-    return this.repositoryService.getAllRepositories();
+  @Get(':username')
+  getAllRepositories(@Param() params): Observable<any[]> {
+    return this.repositoryService.getAllRepositories(params.username);
   }
 }

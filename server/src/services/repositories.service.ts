@@ -7,10 +7,11 @@ import { Observable } from 'rxjs/internal/Observable';
 export class RepositoriesService {
   constructor(private http: HttpService) {}
 
-  getAllRepositories(): Observable<any[]> {
-    return this.http.get('https://pokeapi.co/api/v2/pokemon').pipe(
-      tap((response) => console.log(response.data.results)),
-      map((response) => response.data.results),
+  getAllRepositories(username: string): Observable<any[]> {
+    const url = `https://api.github.com/users/${username}/repos`;
+
+    return this.http.get(url).pipe(
+      map((response) => response.data),
     );
   }
 }
