@@ -1,4 +1,4 @@
-# [CLIENT] React and NodeJS: GitHub Profiler Project
+# [SERVER] React and NodeJS: GitHub Profiler Project
 
 ## Available Scripts
 
