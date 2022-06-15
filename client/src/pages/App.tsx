@@ -21,31 +21,33 @@ function App() {
 
   return (
     <div className="App">
-      <form onSubmit={getGitHubUser}>
-        <div>
-          <label htmlFor='github'> github.com/ </label>
-          <input
-            required
-            id='github'
-            type='text'
-            name='github'
-            value={username}
-            placeholder='username'
-            onChange={event => setUsername(event.target.value)}
-          />
-          <button type="submit"> Go </button>
+        <div className="container">
+          <form onSubmit={getGitHubUser}>
+            <div>
+              <label htmlFor='github'> github.com/ </label>
+              <input
+                required
+                id='github'
+                type='text'
+                name='github'
+                value={username}
+                placeholder='username'
+                onChange={event => setUsername(event.target.value)}
+              />
+              <button type="submit" className="btnGo"> Go </button>
+            </div>
+          </form>
+          { picture &&
+              <div className="container-picture">
+                <img src={picture} alt='avatar' className="picture"/>
+              </div>
+          }
+          { stars &&
+              <div className="container-stars">
+                <span className="stars"> {stars} </span>
+              </div>
+          }
         </div>
-      </form>
-      { picture &&
-          <div>
-            <img src={picture} alt='avatar'/>
-          </div>
-      }
-      { stars &&
-          <div>
-            <span> {stars} </span>
-          </div>
-      }
     </div>
   );
 }
