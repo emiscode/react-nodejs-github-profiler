@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { Cache } from 'cache-manager';
+import {firstValueFrom} from "rxjs";
 
 @Injectable()
 export class RepositoriesService {
@@ -17,9 +18,9 @@ export class RepositoriesService {
       return dataFromCache;
     }
 
-    const dataFromGitHub = this.http.get(url).pipe(
+    const dataFromGitHub = await firstValueFrom(this.http.get(url).pipe(
         map((response) => response.data),
-    );
+    ));
 
     await this.cacheManager.set(username, dataFromGitHub, { ttl: 100 });
 
